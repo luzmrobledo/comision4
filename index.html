@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Comisión 4</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      user-select: none;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4338ca 100%);
+      color: #fff;
+      overflow: hidden;
+      padding: 20px;
+    }
+
+    /* Fondo animado de orbes */
+    .bg-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.45;
+      pointer-events: none;
+      animation: float 8s ease-in-out infinite alternate;
+    }
+    .glow-1 {
+      width: 380px;
+      height: 380px;
+      background: #ec4899;
+      top: 10%;
+      left: 15%;
+    }
+    .glow-2 {
+      width: 340px;
+      height: 340px;
+      background: #06b6d4;
+      bottom: 10%;
+      right: 15%;
+      animation-delay: -4s;
+    }
+
+    @keyframes float {
+      from { transform: translateY(0px) scale(1); }
+      to { transform: translateY(-40px) scale(1.1); }
+    }
+
+    /* Contenedor tipo cartel */
+    .card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 28px;
+      padding: 50px 40px;
+      text-align: center;
+      max-width: 580px;
+      width: 100%;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(99, 102, 241, 0.25);
+      z-index: 10;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 18px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 999px;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      font-weight: 900;
+      line-height: 1.2;
+      background: linear-gradient(to right, #ffffff, #a5b4fc, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 15px;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    p.subtitle {
+      font-size: 1.25rem;
+      color: #e2e8f0;
+      margin-bottom: 35px;
+      font-weight: 500;
+    }
+
+    /* Botones */
+    .buttons-zone {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      min-height: 70px;
+      position: relative;
+    }
+
+    .btn {
+      font-size: 1.25rem;
+      font-weight: 700;
+      padding: 14px 42px;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      outline: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      touch-action: manipulation;
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+    }
+    .btn-yes:hover {
+      transform: scale(1.08);
+      box-shadow: 0 14px 30px rgba(16, 185, 129, 0.6);
+    }
+    .btn-yes:active {
+      transform: scale(0.96);
+    }
+
+    .btn-no {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+      box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
+      position: relative;
+      white-space: nowrap;
+      transition: left 0.15s ease-out, top 0.15s ease-out, transform 0.15s ease;
+    }
+
+    /* Pantalla de Victoria */
+    .success-view {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.6); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .big-emoji {
+      font-size: 6.5rem;
+      line-height: 1;
+      margin: 15px 0 25px;
+      animation: bounce 1.8s infinite;
+      filter: drop-shadow(0 15px 25px rgba(0,0,0,0.3));
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-16px) scale(1.12); }
+    }
+
+    .success-title {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #38bdf8;
+      margin-bottom: 10px;
+    }
+
+    .success-desc {
+      font-size: 1.2rem;
+      color: #e2e8f0;
+      margin-bottom: 25px;
+    }
+
+    .btn-reset {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-reset:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    canvas#confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .card { padding: 36px 20px; }
+      .btn { padding: 12px 30px; font-size: 1.1rem; }
+      .big-emoji { font-size: 5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-glow glow-1"></div>
+  <div class="bg-glow glow-2"></div>
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="card" id="card">
+    <!-- Vista inicial con la pregunta -->
+    <div id="question-view">
+      <div class="badge">📢 Pregunta Definitiva</div>
+      <h1>La comisión 4 es la mejor</h1>
+      <p class="subtitle">¿Estás de acuerdo?</p>
+
+      <div class="buttons-zone" id="buttons-zone">
+        <button class="btn btn-yes" id="btn-yes">¡Sí! 🎉</button>
+        <button class="btn btn-no" id="btn-no">No</button>
+      </div>
+    </div>
+
+    <!-- Vista al confirmar -->
+    <div class="success-view" id="success-view">
+      <div class="big-emoji" id="celebration-emoji">🥳</div>
+      <h2 class="success-title">¡Sabía que ibas a decir que sí!</h2>
+      <p class="success-desc">¡No había ninguna duda! La comisión 4 es la número 1 🏆✨</p>
+      <button class="btn-reset" id="btn-reset">Volver a preguntar 🔄</button>
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById('btn-no');
+    const yesBtn = document.getElementById('btn-yes');
+    const questionView = document.getElementById('question-view');
+    const successView = document.getElementById('success-view');
+    const resetBtn = document.getElementById('btn-reset');
+    const celebrationEmoji = document.getElementById('celebration-emoji');
+
+    const funnyPhrases = [
+      'No',
+      '¿Seguro? 🤔',
+      '¡Casi! 😜',
+      '¡Por acá no! 🏃',
+      'Ups, se escapó 💨',
+      '¡Imposible! ❌',
+      'Ni lo intentes 😏',
+      '¡Probá con el SÍ! 👉'
+    ];
+    let phraseIndex = 0;
+
+    // Sonidos con Web Audio API (sin dependencias externas)
+    function playSound(type) {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (type === 'dodge') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(320, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(700, audioCtx.currentTime + 0.12);
+          gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.13);
+        } else if (type === 'victory') {
+          const notes = [523.25, 659.25, 783.99, 1046.50]; // Do, Mi, Sol, Do alto
+          notes.forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.11);
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime + idx * 0.11);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.11 + 0.35);
+            osc.start(audioCtx.currentTime + idx * 0.11);
+            osc.stop(audioCtx.currentTime + idx * 0.11 + 0.36);
+          });
+        }
+      } catch (e) {
+        // Audio deshabilitado o no permitido
+      }
+    }
+
+    // Función para esquivar el botón "No"
+    function dodgeButton() {
+      const padding = 20;
+      const btnWidth = noBtn.offsetWidth;
+      const btnHeight = noBtn.offsetHeight;
+
+      const maxX = window.innerWidth - btnWidth - padding;
+      const maxY = window.innerHeight - btnHeight - padding;
+
+      // Generar coordenadas aleatorias dentro de la pantalla
+      const newX = Math.floor(Math.random() * (maxX - padding)) + padding;
+      const newY = Math.floor(Math.random() * (maxY - padding)) + padding;
+
+      noBtn.style.position = 'fixed';
+      noBtn.style.left = `${newX}px`;
+      noBtn.style.top = `${newY}px`;
+      noBtn.style.zIndex = '999';
+
+      // Cambiar texto de forma divertida
+      phraseIndex = (phraseIndex + 1) % funnyPhrases.length;
+      noBtn.textContent = funnyPhrases[phraseIndex];
+
+      playSound('dodge');
+    }
+
+    // Eventos para esquivar: hover, puntero cerca, toque en móvil o clic
+    noBtn.addEventListener('mouseenter', dodgeButton);
+    noBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      dodgeButton();
+    });
+
+    // Si el mouse se acerca a menos de 55px del botón, también corre
+    window.addEventListener('mousemove', (e) => {
+      if (questionView.style.display === 'none') return;
+      if (noBtn.style.position !== 'fixed') return;
+
+      const rect = noBtn.getBoundingClientRect();
+      const btnCenterX = rect.left + rect.width / 2;
+      const btnCenterY = rect.top + rect.height / 2;
+
+      const dist = Math.hypot(e.clientX - btnCenterX, e.clientY - btnCenterY);
+      if (dist < 65) {
+        dodgeButton();
+      }
+    });
+
+    // Acción al tocar "Sí"
+    yesBtn.addEventListener('click', () => {
+      playSound('victory');
+      questionView.style.display = 'none';
+      successView.style.display = 'flex';
+      startConfetti();
+
+      // Cambiar emojis cíclicamente en celebración
+      const emojis = ['🥳', '🎉', '🏆', '😎', '👑', '💖', '✨'];
+      let emojiIdx = 0;
+      const interval = setInterval(() => {
+        emojiIdx = (emojiIdx + 1) % emojis.length;
+        celebrationEmoji.textContent = emojis[emojiIdx];
+      }, 700);
+
+      // Guardar el intervalo para limpiarlo si se reinicia
+      successView.dataset.intervalId = interval;
+    });
+
+    // Reiniciar al estado inicial
+    resetBtn.addEventListener('click', () => {
+      clearInterval(Number(successView.dataset.intervalId));
+      stopConfetti();
+
+      // Restaurar el botón No a su lugar original
+      noBtn.style.position = 'relative';
+      noBtn.style.left = 'auto';
+      noBtn.style.top = 'auto';
+      noBtn.textContent = 'No';
+      phraseIndex = 0;
+
+      successView.style.display = 'none';
+      questionView.style.display = 'block';
+    });
+
+    // Efecto de Confeti en Canvas puro
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    let confettiActive = false;
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function createParticles() {
+      const colors = ['#ec4899', '#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4'];
+      particles = [];
+      for (let i = 0; i < 120; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          size: Math.random() * 9 + 5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          speedY: Math.random() * 3 + 2.5,
+          speedX: (Math.random() - 0.5) * 3,
+          rotation: Math.random() * 360,
+          rotationSpeed: (Math.random() - 0.5) * 8
+        });
+      }
+    }
+
+    function renderConfetti() {
+      if (!confettiActive) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((p) => {
+        p.y += p.speedY;
+        p.x += p.speedX;
+        p.rotation += p.rotationSpeed;
+
+        if (p.y > canvas.height) {
+          p.y = -15;
+          p.x = Math.random() * canvas.width;
+        }
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rotation * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
+        ctx.restore();
+      });
+
+      requestAnimationFrame(renderConfetti);
+    }
+
+    function startConfetti() {
+      confettiActive = true;
+      createParticles();
+      renderConfetti();
+    }
+
+    function stopConfetti() {
+      confettiActive = false;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  </script>
+</body>
+</html>
